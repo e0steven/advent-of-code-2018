@@ -6,4 +6,5 @@ var methods = require('require-all')(__dirname + '/methods');
 //methods.m1_2.run();
 //methods.m2_1.run();
 //methods.m2_2.run();
-methods.m3_1.run();
+//methods.m3_1.run();
+methods.m3_2.run();
