@@ -5,6 +5,8 @@ module.exports.run = function(){
     
     var entries = []; 
     var stepsCompleted = [];
+    var workers = [];
+    var timeStamp = 0;
     
     input.forEach(line =>{
             
@@ -36,6 +38,15 @@ module.exports.run = function(){
     });
 
     while(entries.length !== stepsCompleted.length){
+        // process workers
+        workers.forEach((job,index,object) =>{
+            job.timeLeft -= 1;
+            if (job.timeLeft === 1){
+                stepsCompleted.push(job.id);
+                object.splice(index,1);
+            }
+        })
+
         var clean;
         for (x=0;x<entries.length;x++){
             var entry = entries[x];
@@ -43,26 +54,26 @@ module.exports.run = function(){
             if (!entry.done){
                
                 entry.stepsReq.forEach(step =>{
-                   
                     if (!stepsCompleted.includes(step)){
-                         
                             clean = false;
                     }   
                 })
-            } else {
-               
+            } else { 
                 clean = false;
             }
             if (clean){
-               
-                stepsCompleted.push(entry.id);
-                entry.done = 1;
-                x = entries.length;
+                if (workers.length <= 5){
+                    
+                    entry.done = 1;
+                    var newJob = { id : entry.id, timeLeft: entry.id.charCodeAt()-4};
+                    workers.push(newJob);
+                }
             }    
         }
+        timeStamp++;
     }
 
-    console.log('solution 7_1: ' + stepsCompleted.join(''));
+    console.log('solution 7_2: ' + timeStamp);
 
     
 }
